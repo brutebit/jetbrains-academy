@@ -12,8 +12,6 @@ public class LuhnAlgorithm {
     if (cardNumber.length() == 16)
       toProcessNumber = cardNumber.substring(0, 15);
 
-    System.out.println("number "  + toProcessNumber);
-
     int[] digits = processDigits(toProcessNumber);
     int total = 0;
     for (int d : digits)
