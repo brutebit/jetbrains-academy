@@ -1,0 +1,224 @@
+type: edu
+custom_name: Sold!
+files:
+- name: src/cinema/Cinema.java
+  visible: true
+  text: |-
+    package cinema;
+
+    public class Cinema {
+
+        public static void main(String[] args) {
+            // Write your code here
+        }
+    }
+  learner_created: false
+- name: test/CinemaTests.java
+  visible: false
+  text: |
+    import org.hyperskill.hstest.dynamic.input.DynamicTestingMethod;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    public class CinemaTests extends StageTest<String> {
+
+        @DynamicTestingMethod
+        CheckResult test1_testOutput() {
+
+            TestedProgram program = new TestedProgram();
+            String output = program.start();
+
+            if (!output.toLowerCase().contains("enter the number of rows")) {
+                return CheckResult.wrong("At the beginning your program should ask for entering the number of rows.\n" +
+                    "Your output should contain 'Enter the number of rows:'");
+            }
+
+            output = program.execute("4");
+
+            if (!output.toLowerCase().contains("enter the number of seats in each row")) {
+                return CheckResult.wrong("After entering the number of rows your program should ask for entering" +
+                    " the number of seats in each row.\n" +
+                    "Your output should contain 'Enter the number of seats in each row'");
+            }
+
+            output = program.execute("5");
+
+            if (!output.toLowerCase().contains("total income:")) {
+                return CheckResult.wrong("After entering the number of seats in each row your program should print total income.\n" +
+                    "Your output should contain 'Total income:'");
+            }
+
+            if (!output.contains("$200")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $200");
+            }
+
+            return CheckResult.correct();
+        }
+
+        @DynamicTestingMethod
+        CheckResult test2_testIncomeCalculating() {
+
+            TestedProgram program = new TestedProgram();
+            program.start();
+
+            String output = program.execute("8\n9");
+
+            if (!output.contains("$648")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $648");
+            }
+
+            program.stop();
+
+            program = new TestedProgram();
+            program.start();
+
+            output = program.execute("9\n7");
+
+            if (!output.contains("$560")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $560");
+            }
+
+            program.stop();
+
+            program = new TestedProgram();
+            program.start();
+
+            output = program.execute("7\n9");
+
+            if (!output.contains("$558")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $558");
+            }
+
+            program.stop();
+
+            program = new TestedProgram();
+            program.start();
+
+            output = program.execute("1\n1");
+
+            if (!output.contains("$10")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $10");
+            }
+
+            program.stop();
+
+            program = new TestedProgram();
+            program.start();
+
+            output = program.execute("3\n3");
+
+            if (!output.contains("$90")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $90");
+            }
+
+            program.stop();
+
+            program = new TestedProgram();
+            program.start();
+
+            output = program.execute("8\n8");
+
+            if (!output.contains("$576")) {
+                return CheckResult.wrong("You miscalculated the income.\nCorrect one is $576");
+            }
+
+            return CheckResult.correct();
+        }
+    }
+  learner_created: false
+- name: src/cinema/Room.java
+  visible: true
+  text: |
+    package cinema;
+
+    public class Room {
+        private final int numCols = 8;
+        private final int numRows = 7;
+        private char[][] seats = new char[numRows][numCols];
+        {
+            for (int row = 0; row < numRows; row++) {
+                for (int col = 0; col < numCols; col++) {
+                    seats[row][col] = 'S';
+                }
+            }
+        }
+
+        public int getNumCols() {
+            return numCols;
+        }
+
+        public int getNumRows() {
+            return numRows;
+        }
+
+        public char[][] getSeats() {
+            return seats;
+        }
+    }
+  learner_created: true
+- name: src/cinema/RoomFormatter.java
+  visible: true
+  text: |
+    package cinema;
+
+    public class RoomFormatter {
+        private final Room room;
+
+        RoomFormatter(Room room) {
+            this.room = room;
+        }
+
+        public String format() {
+            return makeFirstLine() + makeSeatLines();
+        }
+
+        private String makeFirstLine() {
+            StringBuilder output = new StringBuilder();
+            for (int col = 0; col < room.getNumCols(); col++) {
+                if (col == 0) {
+                    output.append("  ");
+                }
+                if (isFinalColumn(col)) {
+                    output.append(col + 1);
+                } else {
+                    output.append(col + 1).append(" ");
+                }
+            }
+            output.append("\n");
+            return output.toString();
+        }
+
+        private String makeSeatLines() {
+            StringBuilder output = new StringBuilder();
+            for (int row = 0; row < room.getNumRows(); row++) {
+                output.append(row + 1).append(" ");
+                for (int col = 0; col < room.getNumCols(); col++) {
+                    output.append(room.getSeats()[row][col]);
+                    if (!isFinalColumn(row))
+                        output.append(" ");
+                }
+                if (!isFinalRow(row))
+                    output.append("\n");
+            }
+            return output.toString();
+        }
+
+        private boolean isFinalColumn(int col) {
+            return col == room.getNumCols() - 1;
+        }
+
+        private boolean isFinalRow(int row) {
+            return row == room.getNumRows() - 1;
+        }
+    }
+  learner_created: true
+- name: src/cinema/TicketPriceCalculator.java
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/projects/133/stages/710/implement#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Fri, 01 Oct 2021 20:45:03 UTC
+record: 2
